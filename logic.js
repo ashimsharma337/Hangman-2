@@ -4,6 +4,7 @@ var wordToGuess = "";
 var lettersInWord = []; 
 var numberOfBlanks = 0;
 var blanksAndSuccess = [];
+var wrongLetters = [];
 
 //Count Tracker
 var winCount = 0;
@@ -24,6 +25,10 @@ function startGame(){
     for(var i = 0; i<numberOfBlanks; i++){
         blanksAndSuccess.push("_");
     }
+
+    
+    
+    
     
 
     //Debugging/Testing
@@ -38,6 +43,42 @@ function startGame(){
 }
 
 
+function checkLetter(letter){
+
+    //check if letter in code exist at all 
+     var isLetterInWord = false;
+
+     for(var i = 0; i<numberOfBlanks; i++){
+         if(wordToGuess[i] == letter){
+             isLetterInWord = true;
+         }
+     }
+     //check if guessed letter exist in word to guess, and populate blanks and success
+     if(isLetterInWord){
+         for(var i = 0; i<numberOfBlanks; i++){
+         if(wordToGuess[i] == letter){
+             blanksAndSuccess[i] = letter;  
+         }
+
+         }
+     }
+
+     else{
+         wrongLetters.push(letter);
+         guessesLeft--;
+     }
+
+     console.log(blanksAndSuccess);
+}
+
 //Main process================================================================
 
 startGame();
+
+//Capturing keyBoard event
+document.onkeyup = function (event){
+    letterGuessed = String.fromCharCode(event.keyCode).toLocaleLowerCase();
+    console.log(letterGuessed);
+    checkLetter(letterGuessed);
+
+}
