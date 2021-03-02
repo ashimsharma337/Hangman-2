@@ -22,10 +22,28 @@ function startGame(){
     lettersInWord = wordToGuess.split("");
     numberOfBlanks = lettersInWord.length;
     
+    
+
+    //Reset
+    guessesLeft = 9;
+    blanksAndSuccess = [];
+    wrongLetters = [];
+
+    //Populate blanks and sucesses with right number of blanks
     for(var i = 0; i<numberOfBlanks; i++){
         blanksAndSuccess.push("_");
     }
 
+    
+    //Change the HTML to reflect current status
+    document.getElementById("wordToGuess").innerHTML = blanksAndSuccess.join(" ");
+    document.getElementById("guessesLeft").innerHTML = guessesLeft;
+    document.getElementById("winCount").innerHTML = winCount;
+    document.getElementById("lossCount").innerHTML = lossCount;
+
+   
+
+    
     
     
     
@@ -71,6 +89,39 @@ function checkLetter(letter){
      console.log(blanksAndSuccess);
 }
 
+function roundComplete(){
+    console.log("Win Count: "+winCount+" | Loss Count: "+lossCount+" | Guesses Left: "+guessesLeft);
+    
+    //Update HTML count Stats
+    document.getElementById("wordToGuess").innerHTML = blanksAndSuccess.join(" ");
+    document.getElementById("wrongLetters").innerHTML = wrongLetters.join(" ");
+    document.getElementById("guessesLeft").innerHTML = guessesLeft;
+    //Check if user won
+
+    if(lettersInWord.toString() == blanksAndSuccess.toString()){
+        alert("You Won!!!");
+        winCount++;
+        
+
+        //Change HTML to reflect round condition
+        document.getElementById("winCount").innerHTML = winCount;
+        startGame();
+    }
+
+    //Check if user lost
+    else if(guessesLeft == 0){
+        alert("You Lost");
+        lossCount++;
+        
+        //change HTML to reflect round condition
+        document.getElementById("lossCount").innerHTML = lossCount;
+        startGame();
+
+    }
+}
+
+
+
 //Main process================================================================
 
 startGame();
@@ -80,5 +131,7 @@ document.onkeyup = function (event){
     letterGuessed = String.fromCharCode(event.keyCode).toLocaleLowerCase();
     console.log(letterGuessed);
     checkLetter(letterGuessed);
+    roundComplete();
+    
 
 }
